@@ -8,7 +8,7 @@ namespace SistemaDeTarefas.Enums
         AFazer = 1,
         [Description("Em andamento")]
         EmAndamento = 2,
-        [Description("Concluido")]
+        [Description("Concluído")]
         Concluido = 3
     }
 }

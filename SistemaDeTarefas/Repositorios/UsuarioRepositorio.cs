@@ -7,27 +7,30 @@ namespace SistemaDeTarefas.Repositorios
 {
     public class UsuarioRepositorio : IUsuarioRepositorio
     {
-        private readonly SistemaTarefasDBContex _dbContex;
+        private readonly SistemaTarefasDBContex _dbContext;
         public UsuarioRepositorio(SistemaTarefasDBContex sistemaTarefasDBContex)
         {
-            _dbContex = sistemaTarefasDBContex;
+            _dbContext = sistemaTarefasDBContex;
         }
+
         public async Task<UsuarioModel> BuscarPorId(int id)
         {
-            return await _dbContex.Usuarios.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbContext.Usuarios.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<UsuarioModel>> BuscarTodosUsuarios()
         {
-            return await _dbContex.Usuarios.ToListAsync();
+            return await _dbContext.Usuarios.ToListAsync();
         }
+
         public async Task<UsuarioModel> Adicionar(UsuarioModel usuario)
         {
-            await _dbContex.Usuarios.AddAsync(usuario);
-            await _dbContex.SaveChangesAsync();
+            await _dbContext.Usuarios.AddAsync(usuario);
+            await _dbContext.SaveChangesAsync();
 
             return usuario;
         }
+
         public async Task<UsuarioModel> Atualizar(UsuarioModel usuario, int id)
         {
             UsuarioModel usuarioPorId = await BuscarPorId(id);
@@ -36,14 +39,16 @@ namespace SistemaDeTarefas.Repositorios
             {
                 throw new Exception($"Usuário para o ID: {id} não foi encontrado no banco de dados.");
             }
+
             usuarioPorId.Nome = usuario.Nome;
             usuarioPorId.Email = usuario.Email;
 
-            _dbContex.Usuarios.Update(usuarioPorId);
-            await _dbContex.SaveChangesAsync();
+            _dbContext.Usuarios.Update(usuarioPorId);
+            await _dbContext.SaveChangesAsync();
 
             return usuarioPorId;
         }
+
         public async Task<bool> Apagar(int id)
         {
             UsuarioModel usuarioPorId = await BuscarPorId(id);
@@ -53,8 +58,9 @@ namespace SistemaDeTarefas.Repositorios
                 throw new Exception($"Usuário para o ID: {id} não foi encontrado no banco de dados.");
             }
 
-            _dbContex.Usuarios.Remove(usuarioPorId);
-            await _dbContex.SaveChangesAsync();
+            _dbContext.Usuarios.Remove(usuarioPorId);
+            await _dbContext.SaveChangesAsync();
+
             return true;
         }
     }
